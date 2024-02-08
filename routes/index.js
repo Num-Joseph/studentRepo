@@ -2,9 +2,9 @@ const { Router } = require("express");
 const appRouter = Router();
 
 const userRoute = require("./userRouter");
-const epensesRoute = require("./expensesRouter");
+const expensesRoute = require("./expensesRouter");
 
 appRouter.use("/user", userRoute);
-appRouter.use("/expense", epensesRoute);
+appRouter.use("/expenses", expensesRoute);
 
 module.exports = appRouter;
