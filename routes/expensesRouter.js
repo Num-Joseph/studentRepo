@@ -5,10 +5,11 @@ const router = express.Router();
 const expensesController = require("../controllers/expensesController");
 
 //CRUD operations
-router.get("/getAllExpenses", expensesController.getAllExpenses);
-router.post("/createExpenses", expensesController.saveExpenses);
-router.delete("/deleteExpenses/:id", expensesController.deleteExpensesByid);
-router.patch("/updateExpenses/:id", expensesController.updateExpensesByid);
+router.get("/", expensesController.getAllExpenses);
+router.get("/:id", expensesController.singleExpenses)
+router.post("/", expensesController.saveExpenses);
+router.delete("/:id", expensesController.deleteExpensesByid);
+router.patch("/:id", expensesController.updateExpense);
 
 //Modul exportation
 module.exports = router;

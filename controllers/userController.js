@@ -57,38 +57,28 @@ const saveUser = async (req, res, next) => {
     }
   } catch (error) {}
 };
-// Getting a user
-const getUsers = async (req, res, next) => {
-  try {
-    const user = await prisma.user.findMany({});
-    res.status(200).json({
-      user,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+*/
 
 //Getting a single user
-const singleUser = async (req, res, next) => {
+const getSingleUserById = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await prisma.user.findUnique({
       where: {
         id: id,
       },
-      include: {
-        tasks: true,
-      },
     });
-    res.status(200).json({
-      user,
-    });
+    if (!user) {
+      return res.status(404).json({ meesage: "user not found!" });
+    }
+    delete user.password;
+    res.status(200).json({ user });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
-*/
+
 //Deleting a user
 const deleteUserByid = async (req, res, next) => {
   try {
@@ -135,6 +125,7 @@ const getAllUsers = async (req, res, next) => {
 };
 module.exports = {
   saveUser,
+  getSingleUserById,
   getAllUsers,
   updateUserByid,
   deleteUserByid,

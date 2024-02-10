@@ -47,10 +47,10 @@ const singleExpenses = async (req, res, next) => {
       where: {
         id: id,
       },
-      include: {
-        user: true,
-      },
     });
+    if (!expenses) {
+      return res.status(404).json({ message: "Expeses not found" });
+    }
     res.status(200).json({
       expenses,
     });
@@ -80,7 +80,7 @@ const deleteExpensesByid = async (req, res, next) => {
 };
 
 // Updating an expenses
-const updateExpensesByid = async (req, res, next) => {
+const updateExpense = async (req, res, next) => {
   try {
     const id = req.params.id;
     const data = req.body;
@@ -101,7 +101,8 @@ const updateExpensesByid = async (req, res, next) => {
 // Exportion of modules
 module.exports = {
   saveExpenses,
-  updateExpensesByid,
+  singleExpenses,
+  updateExpense,
   deleteExpensesByid,
   getAllExpenses,
   singleExpenses,
