@@ -27,19 +27,14 @@ const saveExpenses = async (req, res, next) => {
   next();
 };
 
-//gitting an expenses
-const getExpenses = async (req, res, next) => {
+//gitting all expenses
+const getAllExpenses = async (req, res, next) => {
   try {
-    const expenses = await prisma.expenses.findMany({
-      include: {
-        user: true,
-      },
-    });
-    res.status(200).json({
-      expenses,
-    });
+    const getAllExpenses = await prisma.expenses.findMany();
+    res.status(200).json({ getAllExpenses });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
   next();
 };
@@ -89,13 +84,13 @@ const updateExpensesByid = async (req, res, next) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    const expenses = await prisma.expenses.update({
+    const updateExpenses = await prisma.expenses.update({
       where: {
         id,
       },
       data,
     });
-    res.status(201).json({ expenses });
+    res.status(200).json({ updateExpenses });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
@@ -108,6 +103,6 @@ module.exports = {
   saveExpenses,
   updateExpensesByid,
   deleteExpensesByid,
-  getExpenses,
+  getAllExpenses,
   singleExpenses,
 };
