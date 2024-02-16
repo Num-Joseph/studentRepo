@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { signToken } = require("../util/token");
 
 // creating a user
 const saveUser = async (req, res, next) => {
@@ -38,26 +38,38 @@ const saveUser = async (req, res, next) => {
   }
 };
 //logging in a user
-/*const login = async (req, res, next) => {
+const userLogin = async (req, res, next) => {
   try {
-    const email = req.boby.email;
-    const password = req.boby.password;
-    const users = await prisma.user.findFirst({
+    const { email, password } = req.body;
+    const user = await prisma.user.findFirst({
       where: {
         email,
-        password,
       },
     });
-    if (!users) {
+    if (!user) {
       res.status(422).json({
-        message: "invalid password",
+        message: "User not found",
       });
     } else {
-      const token = signToken(users.id);
+      const samePassword = await bcrypt.compare(password, user.password);
+      if (!samePassword) {
+        return res.status(400).json({
+          message: "Invalid credentials",
+        });
+      } else {
+        const token = signToken(user.id);
+        return res.status(200).json({
+          user,
+          token,
+          message: "Login successful",
+        });
+      }
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
-*/
 
 //Getting a single user
 const getSingleUserById = async (req, res, next) => {
@@ -125,6 +137,7 @@ const getAllUsers = async (req, res, next) => {
 };
 module.exports = {
   saveUser,
+  userLogin,
   getSingleUserById,
   getAllUsers,
   updateUserByid,

@@ -23,13 +23,24 @@ model User {
 
 // model for expenses
 model expenses {
-  id          String   @id @default(uuid())
-  itermName   String
-  quantity    Int      @default(0)
-  amount      Float    @default(0.00)
-  totalAmount Float    @default(0.00)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  User        User?    @relation(fields: [userId], references: [id])
+  id          String    @id @default(uuid())
+  itermName   itermName
+  quantity    Int       @default(0)
+  amount      Float     @default(0.00)
+  totalAmount Float     @default(0.00)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  User        User?     @relation(fields: [userId], references: [id])
   userId      String?
+}
+
+enum itermName {
+  Transportation
+  Food
+  Pen
+  Book
+  Drink
+  Airtime
+  Bundule
+  Miscellaneous
 }

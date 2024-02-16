@@ -4,20 +4,25 @@ const prisma = new PrismaClient();
 
 // creating an expenses
 const saveExpenses = async (req, res, next) => {
-  let { itermName, quantity, amount, totalAmount } = req.body;
+  let { itermName, quantity, amount } = req.body; // Corrected variable name
+  console.log(itermName);
   try {
+    // Calculating total amount
+    const totalAmount = quantity * amount;
+
     // Creating an expense
     const createExpenses = await prisma.expenses.create({
       data: {
-        itermName,
+        itermName, 
         quantity,
         amount,
         totalAmount,
       },
     });
+    console.log(createExpenses);
     res.status(201).json({
       createExpenses,
-      message: "Expense successfuly created",
+      message: "Successfully created",
       expenses: createExpenses,
     });
   } catch (error) {

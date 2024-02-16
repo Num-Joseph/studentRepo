@@ -11,26 +11,7 @@ const appRouter = require("./routes/index");
 
 app.use(bodyParser.json());
 app.use("/api", appRouter);
-
-/*async function hashPassword(password) {
-  try {
-    const saltRounds = 10;
-    const salt = await bcrypt.genSalt(10);
-
-    const hashPassword = await bcrypt.hash(password, salt);
-    return hashPassword;
-  } catch (error) {
-    console.log("Hashing password error", error);
-    throw error;
-  }
-}
-
-app.get("/", (req, res, next) => {
-  res.json({
-    message: "Hi, welcome to my expenses app",
-  });
-});
-*/
+console.log("test");
 
 // This is where we listen to our server
 app.listen(PORT, () => {
