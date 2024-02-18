@@ -13,7 +13,7 @@ const saveExpenses = async (req, res, next) => {
     // Creating an expense
     const createExpenses = await prisma.expenses.create({
       data: {
-        itermName, 
+        itermName,
         quantity,
         amount,
         totalAmount,
@@ -102,6 +102,24 @@ const updateExpense = async (req, res, next) => {
   }
   next();
 };
+// calculating for payments
+const getAllPaymentsByDate = async (req, res) => {
+  try {
+    const date = moment(req.params.date);
+    const getAllPaymentDaily = await prisma.payments.findMany({
+      where: {
+        createdAt: {
+          gte: date.startOf("day").toDate(),
+          It: date.endOf("day").toDate(),
+        },
+      },
+    });
+    res.status(200).json({ getAllPaymentDaily });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 // Exportion of modules
 module.exports = {
@@ -111,4 +129,5 @@ module.exports = {
   deleteExpensesByid,
   getAllExpenses,
   singleExpenses,
+  getAllPaymentsByDate,
 };

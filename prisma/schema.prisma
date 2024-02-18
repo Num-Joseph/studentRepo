@@ -24,7 +24,7 @@ model User {
 // model for expenses
 model expenses {
   id          String    @id @default(uuid())
-  itermName   itermName
+  itermName   item
   quantity    Int       @default(0)
   amount      Float     @default(0.00)
   totalAmount Float     @default(0.00)
@@ -34,7 +34,7 @@ model expenses {
   userId      String?
 }
 
-enum itermName {
+enum item {
   Transportation
   Food
   Pen
