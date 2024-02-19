@@ -7,13 +7,19 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
-const PORT = 3000;
+//const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/index");
 
 app.use(bodyParser.json());
 app.use("/api", appRouter);
 app.use(cors({ origin: true, credentials: true }));
-console.log("test");
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json("Something whent wrong!");
+});
 
 // This is where we listen to our server
 app.listen(PORT, () => {
