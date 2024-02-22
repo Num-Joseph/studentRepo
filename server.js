@@ -11,9 +11,9 @@ const jwt = require("jsonwebtoken");
 const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/index");
 
+app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
 app.use("/api", appRouter);
-app.use(cors({ origin: true, credentials: true }));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
