@@ -110,11 +110,69 @@ const getAllPaymentsByDate = async (req, res) => {
       where: {
         createdAt: {
           gte: date.startOf("day").toDate(),
-          It: date.endOf("day").toDate(),
+          lte: date.endOf("day").toDate(),
         },
       },
     });
     res.status(200).json({ getAllPaymentDaily });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+// calculation for weekly payment
+const getAllWeeklyPaymentsByDate = async (req, res) => {
+  try {
+    const date = moment(req.params.date);
+    const startOfWeek = date.clone().startOf("isoWeek");
+    const endOfWeek = date.clone().endOf("isoWeek");
+    const getAllPaymentWeekly = await prisma.payments.findMany({
+      where: {
+        createdAt: {
+          gte: startOfWeek.toDate(),
+          lte: endOfWeek.toDate(),
+        },
+      },
+    });
+    res.status(200).json({ getAllPaymentWeekly });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// calculation for monthly payments
+const getAllMonthlyPaymentsByDate = async (req, res) => {
+  try {
+    const date = moment(req.params.date);
+    const getAllPaymentMonth = await prisma.payments.findMany({
+      where: {
+        createdAt: {
+          gte: date.startOf("month").toDate(),
+          lte: date.endOf("month").toDate(),
+        },
+      },
+    });
+    res.status(200).json({ getAllPaymentMonth });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+//calculation for yearly payments
+const getAllYearlyPaymentsByDate = async (req, res) => {
+  try {
+    const date = moment(req.params.date);
+    const getAllPaymentYearly = await prisma.payments.findMany({
+      where: {
+        createdAt: {
+          gte: date.startOf("year").toDate(),
+          lte: date.endOf("year").toDate(),
+        },
+      },
+    });
+    res.status(200).json({ getAllPaymentYearly });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -130,4 +188,7 @@ module.exports = {
   getAllExpenses,
   singleExpenses,
   getAllPaymentsByDate,
+  getAllWeeklyPaymentsByDate,
+  getAllMonthlyPaymentsByDate,
+  getAllYearlyPaymentsByDate,
 };

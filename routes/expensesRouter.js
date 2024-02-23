@@ -10,7 +10,10 @@ router.get("/:id", expensesController.singleExpenses);
 router.post("/", expensesController.saveExpenses);
 router.delete("/:id", expensesController.deleteExpensesByid);
 router.patch("/:id", expensesController.updateExpense);
-router.get("/payment", expensesController.getAllPaymentsByDate);
+router.get("/dairly", expensesController.getAllPaymentsByDate);
+router.get("/weekly", expensesController.getAllWeeklyPaymentsByDate);
+router.get("/monthly", expensesController.getAllMonthlyPaymentsByDate);
+router.get("/yearly", expensesController.getAllYearlyPaymentsByDate);
 
 //Modul exportation
 module.exports = router;
